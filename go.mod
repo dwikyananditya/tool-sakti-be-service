@@ -1,6 +1,6 @@
 module tool-sakti-be-service
 
-go 1.27
+go 1.26.0
 
 require (
 	github.com/gin-contrib/sessions v1.1.2

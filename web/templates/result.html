@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Hasil — Tool Sakti BE Service</title>
+    <script>
+      if ((localStorage.getItem("theme") || "dark") === "dark")
+        document.documentElement.classList.add("dark");
+    </script>
+    <link rel="stylesheet" href="/static/app.css" />
+    <script defer src="/static/app.js"></script>
+  </head>
+  <body class="min-h-screen">
+    {{ template "navbar" . }}
+    <main class="mx-auto max-w-6xl px-4 py-8">
+      <div id="result">
+        <div class="py-16 text-center text-muted-foreground">Memuat…</div>
+      </div>
+    </main>
+  </body>
+</html>

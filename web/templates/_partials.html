@@ -1,0 +1,56 @@
+{{ define "cmd" }}
+<div class="relative mt-1.5" x-data="{ copied: false }">
+  <code
+    x-ref="cmd"
+    class="block overflow-x-auto whitespace-nowrap rounded-md bg-muted py-2 pl-3 pr-9 font-mono text-xs"
+    >{{ . }}</code
+  >
+  <button
+    type="button"
+    class="btn absolute right-1 top-1"
+    data-variant="ghost"
+    data-size="icon-sm"
+    @click="navigator.clipboard && navigator.clipboard.writeText($refs.cmd.textContent); copied = true; setTimeout(() => copied = false, 1200)"
+    :aria-label="copied ? 'Tersalin' : 'Salin'"
+  >
+    <i data-lucide="copy" class="size-3.5"></i>
+  </button>
+  <span
+    x-show="copied"
+    x-cloak
+    class="absolute right-9 top-2 text-[10px] text-muted-foreground"
+    >disalin</span
+  >
+</div>
+{{ end }}
+
+{{ define "navbar" }}
+<header class="border-b border-border bg-card">
+  <div class="mx-auto flex h-14 max-w-6xl items-center justify-between px-4">
+    <a href="/" class="font-semibold tracking-tight">Tool Sakti BE Service</a>
+    <div class="flex items-center gap-1 text-sm">
+      {{ if .login }}
+      <span class="mr-1 text-muted-foreground">{{ .login }}</span>
+      {{ end }}
+      <button
+        type="button"
+        class="btn"
+        data-variant="ghost"
+        data-size="icon"
+        aria-label="Ganti tema"
+        x-data
+        @click="
+          document.documentElement.classList.toggle('dark');
+          localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+        "
+      >
+        <i data-lucide="moon" class="size-5 dark:hidden"></i>
+        <i data-lucide="sun" class="hidden size-5 dark:block"></i>
+      </button>
+      {{ if .login }}
+      <a href="/logout" class="btn" data-variant="ghost" data-size="sm">Logout</a>
+      {{ end }}
+    </div>
+  </div>
+</header>
+{{ end }}

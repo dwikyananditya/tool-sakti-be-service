@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Masuk — Tool Sakti BE Service</title>
+    <script>
+      if ((localStorage.getItem("theme") || "dark") === "dark")
+        document.documentElement.classList.add("dark");
+    </script>
+    <link rel="stylesheet" href="/static/app.css" />
+    <script defer src="/static/app.js"></script>
+  </head>
+  <body class="grid min-h-screen place-items-center px-4">
+    <div class="w-full max-w-sm">
+      <div class="mb-6 text-center">
+        <h1 class="text-xl font-semibold tracking-tight">Tool Sakti BE Service</h1>
+        <p class="mt-1 text-sm text-muted-foreground">Masuk dengan GitHub token</p>
+      </div>
+
+      {{ if .error }}
+      <div class="alert mb-4" data-variant="destructive">
+        <i data-lucide="triangle-alert"></i>
+        <section><p>{{ .error }}</p></section>
+      </div>
+      {{ end }}
+
+      <form action="/login" method="post" class="grid gap-3">
+        <input
+          id="token"
+          type="password"
+          name="token"
+          placeholder="••••••••••••••••••••"
+          autocomplete="off"
+          required
+          class="input w-full text-center"
+        />
+        <button type="submit" class="btn w-full">Masuk</button>
+      </form>
+
+      <div class="mt-3" x-data="{ open: false }">
+        <button
+          type="button"
+          class="btn w-full"
+          data-variant="secondary"
+          @click="open = true"
+        >
+          Cara ambil token
+        </button>
+
+        <div
+          x-show="open"
+          x-cloak
+          @click.self="open = false"
+          @keydown.escape.window="open = false"
+          class="fixed inset-0 z-50 grid place-items-center bg-black/50 p-4"
+        >
+          <div class="card w-[32rem] max-w-[calc(100vw-2rem)] text-left">
+            <header>
+              <h2 class="card-title">Cara ambil token</h2>
+              <p class="card-description">
+                Jalankan di terminal, lalu salin hasilnya.
+              </p>
+            </header>
+            <section>
+              <ol class="list-decimal space-y-4 pl-5 text-sm">
+                <li>
+                  Pastikan scope token:
+                  {{ template "cmd" "gh auth refresh -s repo -s read:org -s read:project" }}
+                </li>
+                <li>
+                  Ambil token:
+                  {{ template "cmd" "gh auth token" }}
+                </li>
+                <li>Paste token ke kolom login.</li>
+              </ol>
+              <button
+                type="button"
+                class="btn mt-6 w-full"
+                data-variant="outline"
+                @click="open = false"
+              >
+                Tutup
+              </button>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

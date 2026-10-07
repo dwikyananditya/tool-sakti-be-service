@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tool Sakti BE Service</title>
+    <script>
+      if ((localStorage.getItem("theme") || "dark") === "dark")
+        document.documentElement.classList.add("dark");
+    </script>
+    <link rel="stylesheet" href="/static/app.css" />
+    <script defer src="/static/app.js"></script>
+  </head>
+  <body class="min-h-screen">
+    {{ template "navbar" . }}
+
+    <div
+      id="spinner"
+      style="display: none"
+      class="pointer-events-none fixed inset-0 z-50 place-items-center bg-background/70 backdrop-blur-sm"
+    >
+      <div class="flex flex-col items-center gap-3">
+        <i data-lucide="loader-circle" class="size-8 animate-spin text-primary"></i>
+        <span class="text-sm text-muted-foreground">Men-scan GitHub…</span>
+      </div>
+    </div>
+
+    <main class="mx-auto max-w-xl px-4 py-10">
+      <div class="card">
+        <header>
+          <h1 class="card-title">Generate KPI</h1>
+          <p class="card-description">
+            Rekonstruksi waktu kerja dari aktivitas GitHub.
+          </p>
+        </header>
+
+        <section>
+          {{ if .error }}
+          <div class="alert mb-4" data-variant="destructive">
+            <i data-lucide="triangle-alert"></i>
+            <section><p>{{ .error }}</p></section>
+          </div>
+          {{ end }}
+
+          <div
+            id="form-error"
+            class="alert mb-4 hidden"
+            data-variant="destructive"
+          >
+            <i data-lucide="triangle-alert"></i>
+            <section><p data-msg></p></section>
+          </div>
+
+          <form id="scan-form" enctype="multipart/form-data" class="grid gap-5">
+            <div class="field">
+              <label class="label" for="dsm">File DSM</label>
+              <input
+                id="dsm"
+                type="file"
+                name="dsm"
+                accept=".md,.txt,text/plain,text/markdown"
+                required
+                class="input"
+              />
+              <p class="text-xs text-muted-foreground">.md / .txt</p>
+            </div>
+
+            <div class="field">
+              <label class="label" for="kpi">File KPI</label>
+              <input id="kpi" type="file" name="kpi" accept=".xlsx" class="input" />
+              <p class="text-xs text-muted-foreground">
+                opsional — kosong = buat baru
+              </p>
+            </div>
+
+            <div class="field">
+              <span class="label">Assignee</span>
+              <div class="flex flex-wrap gap-2">
+                {{ range .assignees }}
+                <label
+                  class="flex cursor-pointer items-center gap-2 rounded-md border border-border px-3 py-1.5 text-sm"
+                >
+                  <input
+                    type="checkbox"
+                    name="assignee"
+                    value="{{ . }}"
+                    checked
+                    class="input size-4"
+                  />
+                  <span class="capitalize">{{ . }}</span>
+                </label>
+                {{ end }}
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="label" for="depth">Kedalaman scan</label>
+              <select id="depth" name="depth" class="select">
+                <option value="1" selected>1 — parent + tiket terkait</option>
+                <option value="0">0 — parent saja</option>
+                <option value="2">2 — lebih dalam</option>
+              </select>
+            </div>
+
+            <button type="submit" class="btn w-full">Scan GitHub</button>
+          </form>
+        </section>
+      </div>
+    </main>
+  </body>
+</html>

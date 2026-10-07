@@ -1,0 +1,20 @@
+{
+  "name": "tool-sakti-be-service",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:css": "tailwindcss -i ./src/app.css -o ./static/app.css --minify",
+    "build:js": "bun build ./src/app.js --outfile ./static/app.js --minify",
+    "build": "bun run build:css && bun run build:js"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.3.3",
+    "tailwindcss": "^4.3.3"
+  },
+  "dependencies": {
+    "alpinejs": "^3.17.4",
+    "basecoat-css": "^1.0.2",
+    "dexie": "^4.4.6",
+    "lucide": "^1.52.0"
+  }
+}
